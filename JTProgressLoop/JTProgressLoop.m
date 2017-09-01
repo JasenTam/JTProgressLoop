@@ -16,8 +16,6 @@
 /** 进度条 */
 @property (nonatomic, weak) UIView *progressView;
 @property (nonatomic, weak) UIImageView *progressImageView;
-/** 中间的自定义View，可以让用户自己去放东西 */
-@property (nonatomic, weak) UIView *customView;
 
 @property (nonatomic, assign) CGFloat radius;
 @property (nonatomic, assign) CGFloat loopWidth;
@@ -28,6 +26,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
+        
         [self _setup];
     }
     
@@ -63,11 +62,13 @@
     
     self.progressImageView.frame = self.progressView.frame;
     
-    CGFloat customViewRadius = self.radius - self.loopWidth;
-    CGFloat customViewX = (width - customViewRadius * 2) / 2;
-    CGFloat customViewY = (height - customViewRadius * 2) / 2;
-    self.customView.frame = CGRectMake(customViewX, customViewY, customViewRadius * 2, customViewRadius * 2);
-    self.customView.layer.cornerRadius = customViewRadius;
+    if (_customView) {
+        
+        CGFloat customViewRadius = self.radius;
+        CGFloat customViewX = (width - customViewRadius * 2) / 2;
+        CGFloat customViewY = (height - customViewRadius * 2) / 2;
+        self.customView.frame = CGRectMake(customViewX, customViewY, customViewRadius * 2, customViewRadius * 2);
+    }
 }
 
 #pragma mark - 公共方法
@@ -223,18 +224,14 @@
 
 - (void)_setup {
     
+    CGFloat width = self.bounds.size.width;
+    CGFloat height = self.bounds.size.height;
+    self.radius = MIN(width, height) / 2;
+    
     [self _setupBackgroundView];
     [self _setupProgressView];
-    [self _setupCustomView];
     
     self.loopBgColor = [UIColor blackColor];
-}
-
-- (void)_setupCustomView {
-    UIView *customView = [UIView new];
-    customView.clipsToBounds = YES;
-    [self addSubview:customView];
-    self.customView = customView;
 }
 
 - (void)_setupProgressView {
@@ -260,6 +257,19 @@
 }
 
 #pragma mark - getter & setter
+
+- (UIView *)customView {
+    if (_customView == nil) {
+        CGFloat customViewRadius = self.radius;
+        CGFloat customViewX = (self.bounds.size.width - customViewRadius * 2) / 2;
+        CGFloat customViewY = (self.bounds.size.height - customViewRadius * 2) / 2;
+        
+        _customView = [[UIView alloc] initWithFrame:CGRectMake(customViewX, customViewY, customViewRadius * 2, customViewRadius * 2)];
+        [self addSubview:_customView];
+    }
+    
+    return _customView;
+}
 
 - (CGFloat)loopWidth {
     

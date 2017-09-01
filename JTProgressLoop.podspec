@@ -16,11 +16,11 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "JTProgressLoop"
-  s.version      = "1.0.0"
+  s.version      = "1.0.2"
   s.summary      = "A Progress Loop."
 
   s.description  = <<-DESC
-  A easy way to show red dot on the view:
+  A Progress Loop, very easy to use.
                    DESC
 
   s.homepage     = "https://github.com/JasenTam/JTProgressLoop"

@@ -26,4 +26,7 @@
 /** 是否顺时针方向 */
 @property (nonatomic, assign) BOOL clockwise;
 
+
+@property (nonatomic, strong) UIView *customView;
+
 @end
